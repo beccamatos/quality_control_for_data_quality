@@ -1,0 +1,145 @@
+cmp_name;peak_mz;rt;matrix;day;replicate;mc_conc;peak_intensity;is_peak_intensity;ratio_mc_is;cmp_number
+D-glucuronic acid;193.0354;5.54;BL;1;1;25;354277312;17179;20622,70;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.49;BL;1;1;4;333368480;4188349;79,59;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.05;BL;1;1;4;296478848;3281463;90,35;3
+Vanilic acid;167.035;15.54;BL;1;1;0.05;78939144;3082441;25,61;4
+Fraxin ;369.0827;16.31;BL;1;1;8;109320824;4440553;24,62;5
+Leu-enkephalin ;554.262;16.11;BL;1;1;5;68754144;4504022;15,27;6
+D-glucuronic acid;193.0354;5.54;BL;1;2;25;354277340;17184;20616,70;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.49;BL;1;2;4;333368000;4188350;79,59;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.05;BL;1;2;4;296480000;3281000;90,36;3
+Vanilic acid;167.035;15.54;BL;1;2;0.05;78900000;3080000;25,62;4
+Fraxin ;369.0827;16.31;BL;1;2;8;109300000;4441000;24,61;5
+Leu-enkephalin ;554.262;16.11;BL;1;2;5;68750000;4500000;15,28;6
+D-glucuronic acid;193.0354;5.54;BL;1;3;25;354277310;17100;20717,97;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.49;BL;1;3;4;333300000;4188000;79,58;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.05;BL;1;3;4;296478000;3281000;90,36;3
+Vanilic acid;167.035;15.54;BL;1;3;0.05;78939000;3082000;25,61;4
+Fraxin ;369.0827;16.31;BL;1;3;8;109320000;4440000;24,62;5
+Leu-enkephalin ;554.262;16.11;BL;1;3;5;68754000;4504000;15,27;6
+D-glucuronic acid;193.0354;5.2;urine ;1;1;25;358478860;17100;20963,68;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.31;urine ;1;1;4;311268480;4188349;74,32;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.06;urine ;1;1;4;276478848;3281463;84,25;3
+Vanilic acid;167.035;15.34;urine ;1;1;0.05;58939144;3082441;19,12;4
+Fraxin ;369.0827;16.04;urine ;1;1;8;102320824;4440553;23,04;5
+Leu-enkephalin ;554.262;16.13;urine ;1;1;5;58754144;4504022;13,04;6
+D-glucuronic acid;193.0354;4.47;urine ;1;2;25;358478860;17100;20963,68;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.33;urine ;1;2;4;314268480;4988349;63,00;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.09;urine ;1;2;4;299478848;3081463;97,19;3
+Vanilic acid;167.035;15.35;urine ;1;2;0.05;58919144;2982441;19,76;4
+Fraxin ;369.0827;16.1;urine ;1;2;8;101320824;4240553;23,89;5
+Leu-enkephalin ;554.262;16.28;urine ;1;2;5;50754144;5504022;9,22;6
+D-glucuronic acid;193.0354;4.47;urine ;1;3;25;358478860;17100;20963,68;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.33;urine ;1;3;4;313268480;4188349;74,80;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.09;urine ;1;3;4;296440523;3281463;90,34;3
+Vanilic acid;167.035;15.35;urine ;1;3;0.05;58839144;3082441;19,09;4
+Fraxin ;369.0827;16.1;urine ;1;3;8;192320824;8040553;23,92;5
+Leu-enkephalin ;554.262;16.28;urine ;1;3;5;80754144;7504022;10,76;6
+D-glucuronic acid;193.0354;5.2;urine ;2;1;25;351473360;17100;20554,00;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.31;urine ;2;1;4;323268480;4188349;77,18;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.06;urine ;2;1;4;286021523;3281463;87,16;3
+Vanilic acid;167.035;15.34;urine ;2;1;0.05;60939144;3082441;19,77;4
+Fraxin ;369.0827;16.04;urine ;2;1;8;122320824;8040553;15,21;5
+Leu-enkephalin ;554.262;16.13;urine ;2;1;5;90754144;6504022;13,95;6
+D-glucuronic acid;193.0354;4.47;urine ;2;2;25;338478860;17100;19794,09;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.33;urine ;2;2;4;353268480;4188349;84,35;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.09;urine ;2;2;4;266021523;3281463;81,07;3
+Vanilic acid;167.035;15.35;urine ;2;2;0.05;38939144;3082441;12,63;4
+Fraxin ;369.0827;16.1;urine ;2;2;8;122320824;4040553;30,27;5
+Leu-enkephalin ;554.262;16.28;urine ;2;2;5;100754144;6904022;14,59;6
+D-glucuronic acid;193.0354;4.47;urine ;2;3;25;358478860;17100;20963,68;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.33;urine ;2;3;4;323268480;4188349;77,18;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.09;urine ;2;3;4;256021523;3281463;78,02;3
+Vanilic acid;167.035;15.35;urine ;2;3;0.05;58939144;3082441;19,12;4
+Fraxin ;369.0827;16.1;urine ;2;3;8;122320824;8040553;15,21;5
+Leu-enkephalin ;554.262;16.28;urine ;2;3;5;111754144;6904022;16,19;6
+D-glucuronic acid;193.0354;5.2;urine ;3;1;25;358478860;17100;20963,68;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.31;urine ;3;1;4;321268480;4188349;76,71;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.06;urine ;3;1;4;286021523;3281463;87,16;3
+Vanilic acid;167.035;15.34;urine ;3;1;0.05;58939144;3082441;19,12;4
+Fraxin ;369.0827;16.04;urine ;3;1;8;192320824;8040553;23,92;5
+Leu-enkephalin ;554.262;16.13;urine ;3;1;5;199754144;7904022;25,27;6
+D-glucuronic acid;193.0354;4.47;urine ;3;2;25;358478860;17100;20963,68;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.33;urine ;3;2;4;313268480;4188349;74,80;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.09;urine ;3;2;4;286021523;3281463;87,16;3
+Vanilic acid;167.035;15.35;urine ;3;2;0.05;58939144;3082441;19,12;4
+Fraxin ;369.0827;16.1;urine ;3;2;8;122320824;8040553;15,21;5
+Leu-enkephalin ;554.262;16.28;urine ;3;2;5;90754144;5904022;15,37;6
+D-glucuronic acid;193.0354;4.47;urine ;3;3;25;135219;382214;0,35;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.33;urine ;3;3;4;321168480;4188349;76,68;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.09;urine ;3;3;4;246021523;3281463;74,97;3
+Vanilic acid;167.035;15.35;urine ;3;3;0.05;52939144;3082441;17,17;4
+Fraxin ;369.0827;16.1;urine ;3;3;8;122320824;8040553;15,21;5
+Leu-enkephalin ;554.262;16.28;urine ;3;3;5;80754144;7904022;10,22;6
+D-glucuronic acid;193.0354;5.2;blood;1;1;25;0;0;;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.31;blood;1;1;4;5770722;21893246;0,26;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.06;blood;1;1;4;6164568;19730106;0,31;3
+Vanilic acid;167.035;15.34;blood;1;1;0.05;4923529;17086626;0,29;4
+Fraxin ;369.0827;16.04;blood;1;1;8;5046781;16514441;0,31;5
+Leu-enkephalin ;554.262;16.13;blood;1;1;5;855904;16335576;0,05;6
+D-glucuronic acid;193.0354;4.47;blood;1;2;25;0;0;;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.33;blood;1;2;4;5639955;21585276;0,26;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.09;blood;1;2;4;6257589;20221564;0,31;3
+Vanilic acid;167.035;15.35;blood;1;2;0.05;5114300;17660094;0,29;4
+Fraxin ;369.0827;16.1;blood;1;2;8;4805523;16678966;0,29;5
+Leu-enkephalin ;554.262;16.28;blood;1;2;5;777079;16622409;0,05;6
+D-glucuronic acid;193.0354;4.47;blood;1;3;25;0;0;;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.33;blood;1;3;4;5640394;21840516;0,26;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.09;blood;1;3;4;6264033;21002606;0,30;3
+Vanilic acid;167.035;15.35;blood;1;3;0.05;4816355;15672079;0,31;4
+Fraxin ;369.0827;16.1;blood;1;3;8;5219429;16706407;0,31;5
+Leu-enkephalin ;554.262;16.28;blood;1;3;5;804587;16421050;0,05;6
+D-glucuronic acid;193.0354;5.53;blood;2;3;25;320406272;17179;18651,04;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.49;blood;2;3;4;326446048;3952248;82,60;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.05;blood;2;3;4;289137792;4470208;64,68;3
+Vanilic acid;167.035;15.55;blood;2;3;0.05;58673084;4357272;13,47;4
+Fraxin ;369.0827;16.3;blood;2;3;8;107259720;4129713;25,97;5
+Leu-enkephalin ;554.262;16.1;blood;2;3;5;62228848;4007380;15,53;6
+D-glucuronic acid;193.0354;5.53;blood;2;2;25;11870796;11979;990,97;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.49;blood;2;2;4;13531083;4040963.2;;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.05;blood;2;2;4;7478489;4253942.5;;3
+Vanilic acid;167.035;15.55;blood;2;2;0.05;2906699;4558029;0,64;4
+Fraxin ;369.0827;16.3;blood;2;2;8;102578880;3775740.2;;5
+Leu-enkephalin ;554.262;16.1;blood;2;2;5;2662666;3775740.2;;6
+D-glucuronic acid;193.0354;5.53;blood;2;1;25;17939384;24010;747,16;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.49;blood;2;1;4;12991138;4131133.2;;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.05;blood;2;1;4;7397842;4428610.5;;3
+Vanilic acid;167.035;15.55;blood;2;1;0.05;3553430;4566701;0,78;4
+Fraxin ;369.0827;16.3;blood;2;1;8;96468344;3575329.5;;5
+Leu-enkephalin ;554.262;16.1;blood;2;1;5;3019793;3575329.5;;6
+D-glucuronic acid;193.0354;5.54;blood;3;1;25;10504293;671946;15,63;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.5;blood;3;1;4;355433632;4743083;74,94;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.05;blood;3;1;4;317169824;4531162;70,00;3
+Vanilic acid;167.035;15.54;blood;3;1;0.05;57861156;4265583;13,56;4
+Fraxin ;369.0827;16.32;blood;3;1;8;117421912;3981106;29,49;5
+Leu-enkephalin ;554.262;16.11;blood;3;1;5;65978276;3970527;16,62;6
+D-glucuronic acid;193.0354;5.54;blood;3;2;25;12758930;17245;739,86;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.5;blood;3;2;4;15159555;4290408.5;;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.05;blood;3;2;4;8264631;4206366;1,96;3
+Vanilic acid;167.035;15.54;blood;3;2;0.05;2959902;4265583;0,69;4
+Fraxin ;369.0827;16.32;blood;3;2;8;25291368;3742979;6,76;5
+Leu-enkephalin ;554.262;16.11;blood;3;2;5;2963178;4191515;0,71;6
+D-glucuronic acid;193.0354;5.54;blood;3;3;25;19905566;57881;343,91;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.5;blood;3;3;4;14761558;4271389.5;;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.05;blood;3;3;4;7816641;4278261.5;;3
+Vanilic acid;167.035;15.54;blood;3;3;0.05;3403400;4252244;0,80;4
+Fraxin ;369.0827;16.32;blood;3;3;8;5021152;3668220;1,37;5
+Leu-enkephalin ;554.262;16.11;blood;3;3;5;3123890;3982322;0,78;6
+D-glucuronic acid;193.0354;5.53;blood;4;1;25;431477184;23116;18665,74;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.47;blood;4;1;4;519574400;3968665;130,92;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.05;blood;4;1;4;491923136;4492669;109,49;3
+Vanilic acid;167.035;15.54;blood;4;1;0.05;77934232;3912526;19,92;4
+Fraxin ;369.0827;16.32;blood;4;1;8;163594240;3664574;44,64;5
+Leu-enkephalin ;554.262;16.11;blood;4;1;5;88017760;3617356;24,33;6
+D-glucuronic acid;193.0354;5.52;blood;4;2;25;13059482;11325;1153,16;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.5;blood;4;2;4;21503282;3971139.2;;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.06;blood;4;2;4;12845177;4010358.2;;3
+Vanilic acid;167.035;15.55;blood;4;2;0.05;3898440;4304136;0,91;4
+Fraxin ;369.0827;16.32;blood;4;2;8;7539285;3411022.2;;5
+Leu-enkephalin ;554.262;16.09;blood;4;3;5;4102002;3411022.2;;6
+D-glucuronic acid;193.0354;5.49;blood;4;3;25;15122016;49586;304,97;1
+2-(4-(2,2-Dicarboxy-ethyl)-2,5-dimethoxy-benzyl)malonic acid;369.0827;14.49;blood;4;3;4;18570070;4030016;4,61;2
+Isoferulic Acid 3-O-B-D-Glucuronide;369.0827;15.07;blood;4;3;4;23599882;4102939.5;;3
+Vanilic acid;167.035;15.54;blood;4;3;0.05;3628606;4156052;0,87;4
+Fraxin ;369.0827;16.32;blood;4;3;8;28367438;3678831.8;;5
+Leu-enkephalin ;554.262;16.09;blood;4;3;5;28367438;3678831.8;;6

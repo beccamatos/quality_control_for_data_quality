@@ -1,0 +1,290 @@
+---
+title: "QC_omics_statistical_analysis"
+author: "Rebecca Matos"
+date: "2026-02-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Description:
+
+-   Load RAW QC ***omics*** datasets
+
+-   Clean data: Remove isotopologues, apply magnitude and chemical filtering
+
+-   Calculate reproducibility metrics
+
+-   Build reproducibility graphs
+
+-   Export processed data
+
+## Load packages
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(NLP)
+library(jsonlite)
+```
+
+
+## Setting-up
+
+```{r}
+# --- Set Working Directory and Create Output Folders ---
+message("Setting up directories...")
+if (!dir.exists("output")) {
+  dir.create("output", recursive = TRUE)
+}
+
+# --- Project Initialization ---
+message("Initializing project...")
+project_dir <- getwd()
+project_name <- "Quality_Control_for_data_quality"
+
+message(paste("Project directory:", project_dir))
+message(paste("Project name:", project_name))
+
+```
+
+
+## Data import
+
+This is a raw table of LC-HRMS measurements of a reference material. The data contains two retention times (14-15 and 15-16 min) of a triplicate measurement.
+
+```{r Import LC-MS data}
+
+message("Loading RAW data file...")
+
+formulas <- read_csv("input/formulas.csv")
+
+message(paste("Loaded RAW formulas:", nrow(formulas), "features"))
+
+
+```
+
+## Clean Data
+
+The formulas table contains 22469 observations which includes the isotopologues of carbon (13C), Hydrogen (2H). Those rows need to be excluded due to low intensity.
+
+```{r}
+
+json_list <- lapply(as.character(formulas$formula_json), fromJSON)
+
+json_unnest<- json_list %>%
+  enframe(name = NULL) %>%
+  unnest_wider(value)
+
+formulas <- cbind(formulas, json_unnest)
+
+t2<- formulas %>%
+  select(formula_json, C, H, O, N, S, `34S`, `13C`) # double check if the order was kept
+
+formulas.mono <- formulas  %>%
+  filter(is.na(`13C`)  & is.na(`34S`)) %>%
+  subset(select = -c(`34S`, `13C`)) # filtered out the isotopologues, excluded the columns to make it clean
+
+message(paste("Filtered isotopologues:", nrow(formulas.mono), "features"))
+
+```
+
+```{r}
+### Creating new columns
+
+formulas.mono$measurement_name <- as.character(formulas.mono$measurement_name)
+formulas.mono$RT <- as.integer(sub(".*_RT([0-9]+)_.*", "\\1", formulas.mono$measurement_name))
+formulas.mono$replicate <- as.integer(sub(".*_RT[0-9]+_([0-9]+)$", "\\1", formulas.mono$measurement_name))
+
+formulas.mono$formula_string <- paste0(
+ifelse(!is.na(formulas.mono$C), paste0("C", formulas.mono$C), " "),
+  ifelse(!is.na(formulas.mono$H), paste0("H", formulas.mono$H), " "),
+  ifelse(!is.na(formulas.mono$O), paste0("O", formulas.mono$O), " "),
+  ifelse(!is.na(formulas.mono$N), paste0("N", formulas.mono$N), " "),
+  ifelse(!is.na(formulas.mono$S), paste0("S", formulas.mono$S), " ")
+)
+
+
+```
+
+The next filter is applied to the column peak_relint_bp. This column refers to the individual mass peak (peak_intensity column) divided by the base peak (highest peak per spectrum). The number should not exceed 1.
+
+```{r}
+formulas.monofilt <- formulas.mono  %>%
+  filter(peak_relint_bp <= 1)
+
+message(paste("Filtered magnetude:", nrow(formulas.monofilt), "features"))
+```
+
+According to research in the field, it is know that the ratio between H/C should be between 0.3 and 2, the N/C between 0 and 1.5, and the O/C between 0 and 1. Also, it is not expected that the number of N exceeds and S 1.
+
+```{r}
+
+formulas.monofilt <- formulas.monofilt  %>%
+  filter(formula_hc > 0.3)  %>%
+  filter(formula_hc < 1.9)  %>%
+  filter(formula_oc > 0)    %>%
+  filter(formula_oc < 0.999) 
+
+message(paste("Filtered chemicaly:", nrow(formulas.monofilt), "features"))
+```
+
+When measuring the samples with a ultrahigh resolution mass spectrometry, some contaminants (in minute concentrations) are inevitale added to the system and have their m/z measured. Most of them are already known (fomula_feature column) and should be excluded.
+
+```{r}
+formulas.monofilt <- formulas.monofilt %>%
+  filter(!grepl("contaminants_LC-MS_neg", formula_feature),
+         !grepl("surfactants_Terrabase_neg", formula_feature),
+         !grepl("Fatty Acid", formula_feature)
+         )
+message(paste("Filtered contaminants:", nrow(formulas.monofilt), "features"))
+```
+
+
+```{r}
+formulas.clean <- formulas.monofilt %>%
+  distinct(RT, replicate, peak_id,  .keep_all = TRUE)
+
+message(paste("Filtered double peaks:", nrow(formulas.clean), "features"))
+```
+
+## Reproducibility metrics
+
+```{r}
+# --- Calculate Replicate Reproducibility Metrics ---
+
+message("Calculating replicate reproducibility metrics...")
+
+formulas.clean <- formulas.clean %>%
+  group_by(RT, formula_string) %>%
+  mutate(
+    formula_count = n(),
+    occurrence_type = if_else(formula_count > 1, "Common", "Unique"),
+    RIdiff = if_else(
+      occurrence_type == "Common",
+      (max(peak_relint_bp, na.rm = TRUE) - min(peak_relint_bp, na.rm = TRUE)) / 
+        min(peak_relint_bp, na.rm = TRUE),
+      NA_real_
+    ),
+    Prec_RIdiff = if_else(
+      occurrence_type == "Common",
+      RIdiff * 100,
+      NA_real_
+    )
+  ) %>%
+  ungroup()
+
+```
+
+```{r}
+# Calculate reproducibility thresholds
+
+
+qc_reproducibility_threshold_window <- formulas.clean %>%
+  filter(occurrence_type == "Common") %>%
+  group_by(RT) %>%
+  summarise(
+    threshold_min = quantile(peak_relint_bp, 0.025, na.rm = TRUE),
+    threshold_max = quantile(peak_relint_bp, 0.975, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+message(paste("Replicate analysis complete. Calculated RIdiff for", 
+              sum(formulas.clean$occurrence_type == "Common", na.rm = TRUE),
+              "common formulas"))
+
+# --- Generate Summary Table ---
+message("Generating summary table...")
+
+qc_summary_table <- formulas.clean %>%
+  group_by(RT, formula_string) %>%
+  filter(n() > 1) %>%
+  summarise(
+    peak_relint_bp_avg = mean(peak_relint_bp, na.rm = TRUE),
+    peak_relint_bp_sd  = sd(peak_relint_bp, na.rm = TRUE),
+    peak_relint_bp_rsd = peak_relint_bp_sd / peak_relint_bp_avg * 100,
+    occurrence_type = first(occurrence_type),  # keep for counting
+    .groups = "drop"
+  ) %>%
+  group_by(RT) %>%
+  summarise(
+    peak_relint_bp_avg = mean(peak_relint_bp_avg, na.rm = TRUE),
+    peak_relint_bp_sd  = mean(peak_relint_bp_sd, na.rm = TRUE),
+    peak_relint_bp_rsd = mean(peak_relint_bp_rsd, na.rm = TRUE),
+    Common = sum(occurrence_type == "Common"),
+    Unique = sum(occurrence_type == "Unique"),
+    Total = n(),
+    Common_pct = 100 * Common / Total,
+    Unique_pct = 100 * Unique / Total,
+    .groups = "drop"
+  ) %>%
+  arrange(RT)
+
+message(paste("Summary statistics calculated for", nrow(summary_table), "retention times"))
+
+```
+
+
+## Averaging replicates
+
+For the same molecular formula in each retention time, average the peak_intensity
+
+```{r}
+qc_individual_summary <-formulas.clean %>%
+  group_by(formula_string, RT)  %>%
+  add_count(formula_string, RT) %>%
+  filter(n >1) %>%
+  summarise(peak_relint_bp_avg = mean(peak_relint_bp),
+            peak_relint_bp_sd = sd(peak_relint_bp),
+            peak_relint_bp_rsd = peak_relint_bp_sd/peak_relint_bp_avg*100) %>%
+  ungroup()
+
+
+
+
+message(paste("Summary statistics calculated for", nrow(qc_individual_summary), "molecular formulas"))
+message("Average intensity values of repeated molecular formulas calculated across replicates")
+
+```
+
+
+## Plots
+
+```{r}
+# Peak intensit avg
+
+
+peak_avg_plot <- ggplot(qc_individual_summary, aes(x = RT, y = peak_relint_bp_avg)) +
+  geom_point() +
+  theme_bw()
+
+
+
+#RSD distribution (histogram)
+
+
+peak_rsd_plot <- ggplot(qc_individual_summary, aes(x = peak_relint_bp_rsd)) +
+  geom_histogram(bins = 30) +
+  theme_bw()
+
+
+```
+
+The peak_intensity outliers are probably contamination that persists after the filters ad should be removed for further analysis.
+
+The majority of the RSD was below 10%, which indicates high precision / reproducibility)
+
+```{r}
+# Save main processed datasets
+write_csv(formulas.clean, "output/formulas_processed.csv")
+write_csv(qc_summary_table, "output/qc_summary_statistics.csv")
+write_csv(qc_reproducibility_threshold_window, "output/qc_reproducibility_thresholds.csv")
+
+# Save plots
+ggsave("peak_avg_plot.png", plot = peak_avg_plot, width = 8, height = 6, dpi = 300)
+ggsave("peak_rsd_plot.png", plot = peak_avg_plot, width = 8, height = 6, dpi = 300)
+
+```
+

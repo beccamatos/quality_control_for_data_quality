@@ -1,0 +1,274 @@
+---
+title: "QC_xenobiotics_statistical_analysis"
+author: "Rebecca Matos"
+date: "2026-02-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Description:
+
+-   Load RAW QC ***xenobiotics*** dataset
+
+-   Calculate measured concentratio, relative accuracy, intra-day and inter-day precision, and  System Suitability according to WADA rules.
+
+-   Build respective graphs
+
+-   Export processed data
+
+## Setting-up
+
+```{r}
+# --- Set Working Directory and Create Output Folders ---
+message("Setting up directories...")
+if (!dir.exists("output")) {
+  dir.create("output", recursive = TRUE)
+}
+
+# --- Project Initialization ---
+message("Initializing project...")
+project_dir <- getwd()
+project_name <- "Quality_Control_for_data_quality"
+
+message(paste("Project directory:", project_dir))
+message(paste("Project name:", project_name))
+
+```
+
+## Data import
+
+```{r }
+
+message("Loading xenobiotics data file...")
+
+xenob_QC <- read_delim("input/xenob_QC.csv",
+                   delim = ";",
+                   show_col_types = FALSE)
+
+# Clean names
+colnames(xenob_QC) <- trimws(colnames(xenob_QC))
+
+xenob_QC$ratio_mc_is <- as.numeric(gsub(",", ".", xenob_QC$ratio_mc_is))
+
+message(paste("Loaded xenobiotics QC:", nrow(xenob_QC), "features"))
+
+```
+
+## Calculate measured concentration
+
+```{r}
+
+qc_measured_conc <- xenob_QC %>%
+  group_by(cmp_number, matrix) %>%
+  summarize(
+    mean_ratio = mean(ratio_mc_is, na.rm = TRUE),
+    sd_ratio   = sd(ratio_mc_is, na.rm = TRUE),
+    cv_percent = (sd_ratio / mean_ratio) * 100
+  ) %>%
+  mutate(across(c(mean_ratio, sd_ratio, cv_percent),
+                ~ round(., 2))) %>%
+  ungroup()
+
+
+```
+
+## Relative accuracy across matrices blood and urine (% Bias)
+
+```{r}
+# Intensity in BL as true value
+
+bl_reference <- xenob_QC %>%
+  filter(matrix == "BL") %>%
+  group_by(cmp_number, mc_conc) %>%
+  summarise(
+    true_ratio = mean(ratio_mc_is, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Calculate in blood and urine
+
+qc_accuracy <- xenob_QC %>%
+  filter(matrix != "BL") %>%
+  left_join(bl_reference,
+            by = c("cmp_number", "mc_conc")) %>%
+  group_by(cmp_number, matrix, mc_conc) %>%
+  summarise(
+    mean_ratio = mean(ratio_mc_is, na.rm = TRUE),
+    true_ratio = first(true_ratio),
+    accuracy_percent = (mean_ratio / true_ratio) * 100,
+    bias_percent = accuracy_percent - 100,
+    .groups = "drop"
+  ) %>%
+  mutate(across(c(mean_ratio, true_ratio, accuracy_percent, bias_percent),
+                ~ round(., 2)))
+
+# Result interpretation
+
+qc_accuracy %>%
+  mutate(
+    pass = case_when(
+      abs(bias_percent) <= 15 ~ "PASS",
+      TRUE ~ "FAIL"
+    )
+  ) 
+```
+
+Accuracy was assessed by comparing mean analyte/internal standard response ratios in biological matrices (blood and urine) against the reference blank matrix (BL).
+
+
+### Plots 
+
+```{r}
+ggplot(qc_accuracy) +
+  geom_bar(aes(x = as.factor(matrix), y = accuracy_percent),
+           stat = "identity",
+           fill = "dodgerblue4",
+           alpha = 0.5) +
+  geom_errorbar(aes(x = as.factor(matrix),
+                    ymin = accuracy_percent - 5,  # Example: ±5% error, adjust as needed
+                    ymax = accuracy_percent + 5),
+                width = 0.4,
+                colour = "black",
+                alpha = 0.9,
+                size = 0.5) +
+  coord_flip() +
+  facet_wrap(vars(cmp_number)) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(
+    x = "Matrix",
+    y = "Accuracy (%)"
+  )
+
+
+qc_measured_conc_filtered <- qc_measured_conc %>%
+  filter(matrix %in% c("urine ", "blood"))
+
+ggplot(qc_measured_conc_filtered) +
+  geom_bar(aes(x = as.factor(matrix), y = cv_percent),
+           stat = "identity",
+           fill = "dodgerblue4",
+           alpha = 0.5) +
+  coord_flip() +
+  facet_wrap(vars(cmp_number)) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(
+    x = "Matrix",
+    y = "Coefficient of variance (%)"
+  )
+
+
+```
+
+## Intra-day precision
+
+```{r}
+
+intra_day <- xenob_QC %>%
+  group_by(cmp_number, day, matrix) %>%
+  summarise(
+    mean_ratio = mean(ratio_mc_is),
+    sd_ratio = sd(ratio_mc_is),
+    cv_percent = (sd_ratio/mean_ratio)*100
+  ) %>%
+  mutate(across(c(mean_ratio, sd_ratio, cv_percent),
+                ~ round(., 2)))
+
+
+```
+
+### Plot
+
+```{r}
+ggplot(intra_day, aes(x = cmp_number, y = cv_percent, fill = matrix)) +
+  geom_bar(stat = "identity", position = "dodge", alpha = 0.8) +
+  theme_minimal() +
+  labs(
+    x = "Compound",
+    y = "Intra-day vari.(%)",
+    fill = "Matrix"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+## Inter-day precision
+
+```{r}
+
+inter_day <- xenob_QC %>%
+  group_by(cmp_number, matrix) %>%
+  summarise(
+    mean_ratio = mean(ratio_mc_is),
+    sd_ratio = sd(ratio_mc_is),
+    cv_percent = (sd_ratio/mean_ratio)*100
+  ) %>%
+  mutate(across(c(mean_ratio, sd_ratio, cv_percent),
+                ~ round(., 2)))
+
+```
+
+### Plot
+
+```{r}
+ggplot(inter_day) +
+  geom_bar(aes(x = as.factor(matrix), y = cv_percent),
+           stat = "identity",
+           fill = "dodgerblue4",
+           alpha = 0.5) +
+  coord_flip() +
+  facet_wrap(vars(cmp_number)) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(
+    x = "Matrix",
+    y = "Coefficient of variance (%)"
+  )
+```
+
+
+##  System Suitability
+
+```{r}
+
+system_suitability <- xenob_QC %>%
+  group_by(cmp_number, day) %>%
+  summarise(
+    rt_mean = mean(rt, na.rm = TRUE),
+    rt_sd   = sd(rt, na.rm = TRUE),
+    rt_cv   = (rt_sd / rt_mean) * 100,
+    is_cv   = (sd(is_peak_intensity, na.rm = TRUE) /
+               mean(is_peak_intensity, na.rm = TRUE)) * 100,
+    .groups = "drop"
+  ) %>%
+  mutate(across(c(rt_mean, rt_sd, rt_cv, rt_cv, is_cv),
+                ~ round(., 2)))
+```
+
+##  Output summary
+
+```{r}
+
+
+summary <-
+list(
+  qc_accuracy = qc_accuracy,
+  Intra_day = intra_day,
+  Inter_day = inter_day,
+  System_Suitability = system_suitability
+)
+
+
+write_csv(qc_accuracy, "output/qc_accuracy.csv")
+write_csv(intra_day, "output/intra_day.csv")
+write_csv(inter_day, "output/inter_day.csv")
+write_csv(system_suitability, "output/system_suitability.csv")
+
+```
+
+
