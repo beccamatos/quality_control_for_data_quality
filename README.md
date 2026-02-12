@@ -12,13 +12,21 @@ chemical and biological data.
 ## Repository Structure
 
 quality_control_for_data_quality/ 
+
 ├── QC_omics_statistical_analysis.Rmd
+
 ├──QC_xenobiotics_statistical_analysis.Rmd  
+
 ├── input/ 
+
 │     ├── formulas.csv 
+
 │     └── xenob_QC.csv 
+
 ├── output/ 
+
 ├── quality_control_stats.Rproj
+
 └── README.md 
 
 ## 1. QC Analysis of Omics Data
